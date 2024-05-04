@@ -1,0 +1,14 @@
+{
+	"name": "AzureDatabricks1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Databricks para obtener el analisis de los sentimientos",
+		"annotations": [],
+		"type": "AzureDatabricks",
+		"typeProperties": {
+			"domain": "https://adb-852903750915076.16.azuredatabricks.net",
+			"existingClusterId": "0504-142336-4g3jzyjm",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQENBODBBMEEzLTQ1RkMtNDRBQy1BNjc3LTk4OEQxNkRGNDk5M181NDI0ZmRjMi1mY2U1LTRiZjUtOTVkNS1jOTExYjExYTQ5MzIiDQp9"
+		}
+	}
+}
