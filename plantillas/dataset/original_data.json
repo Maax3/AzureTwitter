@@ -5,11 +5,20 @@
 			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"file_name_origin": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().file_name_origin",
+					"type": "Expression"
+				},
 				"fileSystem": "archivoscsv"
 			},
 			"columnDelimiter": "*",
@@ -19,7 +28,67 @@
 		},
 		"schema": [
 			{
-				"name": "user_id*username*id*created_at_datetime*text*lang*reply_count*retweet_count*favorite_count*view_count*location*hashtags*in_reply_to*quote*quote_count*possibly_sensitive",
+				"name": "user_id",
+				"type": "String"
+			},
+			{
+				"name": "username",
+				"type": "String"
+			},
+			{
+				"name": "id",
+				"type": "String"
+			},
+			{
+				"name": "created_at_datetime",
+				"type": "String"
+			},
+			{
+				"name": "text",
+				"type": "String"
+			},
+			{
+				"name": "lang",
+				"type": "String"
+			},
+			{
+				"name": "reply_count",
+				"type": "String"
+			},
+			{
+				"name": "retweet_count",
+				"type": "String"
+			},
+			{
+				"name": "favorite_count",
+				"type": "String"
+			},
+			{
+				"name": "view_count",
+				"type": "String"
+			},
+			{
+				"name": "location",
+				"type": "String"
+			},
+			{
+				"name": "hashtags",
+				"type": "String"
+			},
+			{
+				"name": "in_reply_to",
+				"type": "String"
+			},
+			{
+				"name": "quote",
+				"type": "String"
+			},
+			{
+				"name": "quote_count",
+				"type": "String"
+			},
+			{
+				"name": "possibly_sensitive",
 				"type": "String"
 			}
 		]
