@@ -3,11 +3,16 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach1",
+				"name": "Procesamiento de datos",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.file_name_origin",
+						"type": "Expression"
+					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "databricks-process",
@@ -61,7 +66,21 @@
 							"typeProperties": {
 								"dataflow": {
 									"referenceName": "dataflow_process",
-									"type": "DataFlowReference"
+									"type": "DataFlowReference",
+									"datasetParameters": {
+										"origindata": {
+											"file_name_origin": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										},
+										"newdata": {
+											"file_name_themes": {
+												"value": "@pipeline().parameters.file_name_themes",
+												"type": "Expression"
+											}
+										}
+									}
 								},
 								"compute": {
 									"coreCount": 8,
