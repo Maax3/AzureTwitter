@@ -67,6 +67,12 @@
 								"dataflow": {
 									"referenceName": "dataflow_process",
 									"type": "DataFlowReference",
+									"parameters": {
+										"nombre_fichero": {
+											"value": "'@{item()}'",
+											"type": "Expression"
+										}
+									},
 									"datasetParameters": {
 										"origindata": {
 											"file_name_origin": {
