@@ -1,0 +1,9 @@
+{
+	"name": "factoria-twitter",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "4d140819-99b5-47af-9c09-8122f49d22fc",
+		"tenantId": "f5035ba1-df63-4e55-9095-b2455a6d258f"
+	}
+}
