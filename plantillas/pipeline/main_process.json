@@ -1,0 +1,102 @@
+{
+	"name": "main_process",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "databricks-process",
+							"type": "DatabricksNotebook",
+							"dependsOn": [
+								{
+									"activity": "dataflow_process",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebookPath": "/Users/dimacontacto94@gmail.com/Analisis-Sentimientos-1",
+								"baseParameters": {
+									"file_name_origin": {
+										"value": "@item()",
+										"type": "Expression"
+									},
+									"save_route_databricks": {
+										"value": "@split(item(), '.')[0]",
+										"type": "Expression"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureDatabricks1",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "dataflow_process",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "dataflow_process",
+									"type": "DataFlowReference"
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"file_name_origin": {
+				"type": "array",
+				"defaultValue": [
+					"hiberus.csv",
+					"viewnext.csv",
+					"minsait.csv",
+					"nttdata-2020.csv"
+				]
+			},
+			"file_name_themes": {
+				"type": "array",
+				"defaultValue": [
+					"temasHiberus.csv",
+					"temasVN.csv",
+					"temasMinsait.csv",
+					"temasNttdata.csv"
+				]
+			},
+			"save_route_databricks": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
