@@ -1,0 +1,365 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "dataflow_storage",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow_storage",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "dataflow_storage",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "user_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "user_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "username",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "username",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "tweet_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "tweet_id",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "retweet_count",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "retweet_count",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "likes",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "likes",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "view_count",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "view_count",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "hashtags",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "hashtags",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "text",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "text",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "location",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "location",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "temas",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "temas",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "latitud",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "latitud",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "longitud",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "longitud",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "URL",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "URL",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sentiment_score",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sentiment_score",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "sentiment_result",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "sentiment_result",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "storage_files",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"esquemaJSON": {
+				"type": "object",
+				"defaultValue": {
+					"columns": [
+						{
+							"name": "user_id",
+							"type": "long"
+						},
+						{
+							"name": "username",
+							"type": "string"
+						},
+						{
+							"name": "tweet_id",
+							"type": "long"
+						},
+						{
+							"name": "created_at",
+							"type": "string"
+						},
+						{
+							"name": "retweet_count",
+							"type": "int"
+						},
+						{
+							"name": "likes",
+							"type": "int"
+						},
+						{
+							"name": "view_count",
+							"type": "double"
+						},
+						{
+							"name": "hashtags",
+							"type": "string"
+						},
+						{
+							"name": "text",
+							"type": "string"
+						},
+						{
+							"name": "location",
+							"type": "string"
+						},
+						{
+							"name": "temas",
+							"type": "string"
+						},
+						{
+							"name": "latitud",
+							"type": "double"
+						},
+						{
+							"name": "longitud",
+							"type": "double"
+						},
+						{
+							"name": "URL",
+							"type": "string"
+						},
+						{
+							"name": "sentiment_score",
+							"type": "double"
+						},
+						{
+							"name": "sentiment_result",
+							"type": "string"
+						}
+					]
+				}
+			}
+		},
+		"variables": {
+			"S": {
+				"type": "Array"
+			}
+		},
+		"annotations": []
+	}
+}
