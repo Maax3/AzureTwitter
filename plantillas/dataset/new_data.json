@@ -21,7 +21,7 @@
 				},
 				"fileSystem": "newdata"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "*",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
@@ -32,7 +32,15 @@
 				"type": "String"
 			},
 			{
-				"name": "text",
+				"name": "location",
+				"type": "String"
+			},
+			{
+				"name": "latitud",
+				"type": "String"
+			},
+			{
+				"name": "longitud",
 				"type": "String"
 			},
 			{

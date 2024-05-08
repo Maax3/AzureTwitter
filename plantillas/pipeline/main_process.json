@@ -21,7 +21,7 @@
 								{
 									"activity": "dataflow_process",
 									"dependencyConditions": [
-										"Completed"
+										"Succeeded"
 									]
 								}
 							],
