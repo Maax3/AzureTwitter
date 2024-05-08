@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "ejemplo",
 	"properties": {
 		"activities": [
 			{
@@ -65,20 +65,19 @@
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
-					"validateDataConsistency": false,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
 							{
 								"source": {
 									"name": "user_id",
-									"type": "long",
-									"physicalType": "long"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "user_id",
-									"type": "bigint",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -96,13 +95,13 @@
 							{
 								"source": {
 									"name": "tweet_id",
-									"type": "long",
-									"physicalType": "long"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "tweet_id",
-									"type": "bigint",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -120,37 +119,37 @@
 							{
 								"source": {
 									"name": "retweet_count",
-									"type": "int",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "retweet_count",
-									"type": "int",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
 									"name": "likes",
-									"type": "int",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "likes",
-									"type": "int",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
 									"name": "view_count",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "view_count",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -204,25 +203,25 @@
 							{
 								"source": {
 									"name": "latitud",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "latitud",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
 									"name": "longitud",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "longitud",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -240,13 +239,13 @@
 							{
 								"source": {
 									"name": "sentiment_score",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "sentiment_score",
-									"type": "float",
-									"physicalType": "float"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
