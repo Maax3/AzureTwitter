@@ -309,7 +309,7 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "ALTER TABLE dbo.tabla111\nADD PRIMARY KEY (tweet_id);"
+							"text": "ALTER TABLE dbo.tabla112 ADD PRIMARY KEY (tweet_id);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
