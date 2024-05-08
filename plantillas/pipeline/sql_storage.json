@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "sql_storage",
 	"properties": {
 		"activities": [
 			{
@@ -309,7 +309,7 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "ALTER TABLE tabla10\nADD PRIMARY KEY (tweet_id);"
+							"text": "ALTER TABLE dbo.tabla10\nADD PRIMARY KEY (tweet_id);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
