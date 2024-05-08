@@ -13,7 +13,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "tesoppo"
+			"table": "tabla10"
 		}
 	}
 }
