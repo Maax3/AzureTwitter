@@ -1,9 +1,14 @@
 {
-	"name": "AzureSqlTable1",
+	"name": "ds_sql",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase1",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"table_name": {
+				"type": "string"
+			}
 		},
 		"folder": {
 			"name": "SQL"
@@ -13,7 +18,10 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "tabla8"
+			"table": {
+				"value": "@dataset().table_name",
+				"type": "Expression"
+			}
 		}
 	}
 }

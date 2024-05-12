@@ -6,14 +6,14 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "original_data",
+						"referenceName": "ds_original_data",
 						"type": "DatasetReference"
 					},
 					"name": "origindata"
 				},
 				{
 					"dataset": {
-						"referenceName": "new_data",
+						"referenceName": "ds_new_data",
 						"type": "DatasetReference"
 					},
 					"name": "newdata"
@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "final_data",
+						"referenceName": "ds_final_data",
 						"type": "DatasetReference"
 					},
 					"name": "guardado"

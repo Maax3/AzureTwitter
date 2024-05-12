@@ -1,5 +1,5 @@
 {
-	"name": "final_data",
+	"name": "ds_final_data",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",

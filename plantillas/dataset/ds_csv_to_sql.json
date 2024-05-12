@@ -5,6 +5,11 @@
 			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"file_name_origin": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "SQL"
 		},
@@ -13,7 +18,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "minsait.csv",
+				"fileName": {
+					"value": "@dataset().file_name_origin",
+					"type": "Expression"
+				},
 				"folderPath": "lib",
 				"fileSystem": "outputdata"
 			},
