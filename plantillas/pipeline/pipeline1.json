@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Copy data1",
+				"description": "DROP TABLE dbo.tabla8;",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -273,7 +274,7 @@
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[ModificarTabla]",
 					"storedProcedureParameters": {
-						"@NombreTabla": {
+						"NombreTabla": {
 							"value": "tabla8",
 							"type": "String"
 						}
