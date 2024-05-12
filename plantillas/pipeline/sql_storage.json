@@ -28,6 +28,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
+						"preCopyScript": "DROP TABLE dbo.tabla8;",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
@@ -341,8 +342,8 @@
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[ModificarTabla]",
 					"storedProcedureParameters": {
-						"nombre_tabla": {
-							"value": "tabla1",
+						"@NombreTabla": {
+							"value": "tabla8",
 							"type": "String"
 						}
 					}
