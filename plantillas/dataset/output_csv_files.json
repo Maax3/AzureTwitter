@@ -13,7 +13,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "hiberus",
+				"fileName": "minsait.csv",
+				"folderPath": "lib",
 				"fileSystem": "outputdata"
 			},
 			"columnDelimiter": "*",
