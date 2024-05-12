@@ -3,40 +3,9 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "dataflow_storage",
-				"type": "ExecuteDataFlow",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataflow": {
-						"referenceName": "dataflow_storage",
-						"type": "DataFlowReference"
-					},
-					"compute": {
-						"coreCount": 8,
-						"computeType": "General"
-					},
-					"traceLevel": "Fine"
-				}
-			},
-			{
 				"name": "Copy data1",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "dataflow_storage",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -271,7 +240,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "storage_files",
+						"referenceName": "ds_csv_to_sql",
 						"type": "DatasetReference"
 					}
 				],
@@ -284,12 +253,13 @@
 			},
 			{
 				"name": "addPrimaryKey",
+				"description": "Establece la primary key a la columna \"primaryID\"",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "addNotNULL",
 						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
@@ -309,10 +279,77 @@
 					"scripts": [
 						{
 							"type": "NonQuery",
-							"text": "ALTER TABLE dbo.tabla112 ADD PRIMARY KEY (tweet_id);"
+							"text": "ALTER TABLE dbo.tabla04 ADD PRIMARY KEY (tweet_id);"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "addNotNULL",
+				"description": "Establece los campos de la clave primaria a no nulos.",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "NonQuery",
+							"text": "ALTER TABLE dbo.tabla04 ALTER COLUMN tweet_id bigint NOT NULL;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[ModificarTabla]",
+					"storedProcedureParameters": {
+						"nombre_tabla": {
+							"value": "tabla1",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],

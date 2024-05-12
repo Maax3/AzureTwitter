@@ -30,10 +30,15 @@
 			],
 			"transformations": [
 				{
-					"name": "join1"
+					"name": "Join"
 				},
 				{
-					"name": "select1"
+					"name": "deleteDuplicates",
+					"description": "Eliminacion de duplicados resultantes del join"
+				},
+				{
+					"name": "addPrimaryKeyColumn",
+					"description": "Creacion de clave primaria"
 				}
 			],
 			"scriptLines": [
@@ -75,8 +80,8 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1",
-				"join1 select(mapColumn(",
+				"     broadcast: 'auto')~> Join",
+				"Join select(mapColumn(",
 				"          user_id,",
 				"          username,",
 				"          id = origindata@id,",
@@ -100,8 +105,11 @@
 				"          temas",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: true) ~> deleteDuplicates",
+				"deleteDuplicates keyGenerate(output(primaryID as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> addPrimaryKeyColumn",
+				"addPrimaryKeyColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:[($nombre_fichero)],",
 				"     umask: 0022,",

@@ -1,5 +1,5 @@
 {
-	"name": "output_csv_files",
+	"name": "ds_csv_to_sql",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
