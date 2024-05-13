@@ -10,6 +10,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "CSV"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
@@ -19,7 +22,8 @@
 					"value": "@dataset().file_name_origin",
 					"type": "Expression"
 				},
-				"fileSystem": "archivoscsv"
+				"folderPath": "raw_csv",
+				"fileSystem": "rawdata"
 			},
 			"columnDelimiter": "*",
 			"escapeChar": "\\",
