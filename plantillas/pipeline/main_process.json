@@ -34,7 +34,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"notebookPath": "/Users/dimacontacto94@gmail.com/Analisis-Sentimientos-1",
+								"notebookPath": "/Users/dimacontacto94@gmail.com/Analisis-Sentimientos-LLM",
 								"baseParameters": {
 									"file_name_origin": {
 										"value": "@item()",
@@ -101,7 +101,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "If Condition1",
+									"activity": "IF TABLE EXISTS",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -140,6 +140,18 @@
 									"mappings": [
 										{
 											"source": {
+												"name": "primaryID",
+												"type": "int",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "primaryID",
+												"type": "int",
+												"physicalType": "int"
+											}
+										},
+										{
+											"source": {
 												"name": "user_id",
 												"type": "long",
 												"physicalType": "long"
@@ -172,18 +184,6 @@
 												"name": "tweet_id",
 												"type": "bigint",
 												"physicalType": "bigint"
-											}
-										},
-										{
-											"source": {
-												"name": "created_at",
-												"type": "String",
-												"physicalType": "String"
-											},
-											"sink": {
-												"name": "created_at",
-												"type": "String",
-												"physicalType": "nvarchar"
 											}
 										},
 										{
@@ -236,36 +236,12 @@
 										},
 										{
 											"source": {
-												"name": "text",
-												"type": "String",
-												"physicalType": "String"
-											},
-											"sink": {
-												"name": "text",
-												"type": "String",
-												"physicalType": "nvarchar"
-											}
-										},
-										{
-											"source": {
 												"name": "location",
 												"type": "String",
 												"physicalType": "String"
 											},
 											"sink": {
 												"name": "location",
-												"type": "String",
-												"physicalType": "nvarchar"
-											}
-										},
-										{
-											"source": {
-												"name": "temas",
-												"type": "String",
-												"physicalType": "String"
-											},
-											"sink": {
-												"name": "temas",
 												"type": "String",
 												"physicalType": "nvarchar"
 											}
@@ -296,12 +272,48 @@
 										},
 										{
 											"source": {
+												"name": "temas",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "temas",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "text",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "text",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
 												"name": "URL",
 												"type": "String",
 												"physicalType": "String"
 											},
 											"sink": {
 												"name": "URL",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sentiment_result",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sentiment_result",
 												"type": "String",
 												"physicalType": "nvarchar"
 											}
@@ -320,26 +332,14 @@
 										},
 										{
 											"source": {
-												"name": "sentiment_result",
+												"name": "created_at",
 												"type": "String",
 												"physicalType": "String"
 											},
 											"sink": {
-												"name": "sentiment_result",
+												"name": "created_at",
 												"type": "String",
 												"physicalType": "nvarchar"
-											}
-										},
-										{
-											"source": {
-												"name": "primaryID",
-												"type": "int",
-												"physicalType": "int"
-											},
-											"sink": {
-												"name": "primaryID",
-												"type": "int",
-												"physicalType": "int"
 											}
 										}
 									],
@@ -413,13 +413,14 @@
 							}
 						},
 						{
-							"name": "IF TABLE EXISTS",
+							"name": "Check if table exists",
+							"description": "Comprueba si la tabla de la base de datos existe. Si el valor devuelto por la 'búsqueda' es vacio la tabla no existe.",
 							"type": "Lookup",
 							"dependsOn": [
 								{
 									"activity": "databricks-process",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
@@ -450,11 +451,11 @@
 							}
 						},
 						{
-							"name": "If Condition1",
+							"name": "IF TABLE EXISTS",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "IF TABLE EXISTS",
+									"activity": "Check if table exists",
 									"dependencyConditions": [
 										"Completed"
 									]
@@ -463,7 +464,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@empty(activity('IF TABLE EXISTS').output)",
+									"value": "@not(empty(activity('Check if table exists').output))",
 									"type": "Expression"
 								},
 								"ifTrueActivities": [
