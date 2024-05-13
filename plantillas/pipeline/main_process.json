@@ -101,15 +101,9 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "DROP TABLE",
+									"activity": "If Condition1",
 									"dependencyConditions": [
 										"Succeeded"
-									]
-								},
-								{
-									"activity": "IF TABLE EXISTS",
-									"dependencyConditions": [
-										"Failed"
 									]
 								}
 							],
@@ -335,6 +329,18 @@
 												"type": "String",
 												"physicalType": "nvarchar"
 											}
+										},
+										{
+											"source": {
+												"name": "primaryID",
+												"type": "int",
+												"physicalType": "int"
+											},
+											"sink": {
+												"name": "primaryID",
+												"type": "int",
+												"physicalType": "int"
+											}
 										}
 									],
 									"typeConversion": true,
@@ -444,40 +450,54 @@
 							}
 						},
 						{
-							"name": "DROP TABLE",
-							"description": "Borra los datos para evitar duplicidades",
-							"type": "SqlServerStoredProcedure",
+							"name": "If Condition1",
+							"type": "IfCondition",
 							"dependsOn": [
 								{
 									"activity": "IF TABLE EXISTS",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[dbo].[BorrarTabla]",
-								"storedProcedureParameters": {
-									"NombreTabla": {
-										"value": {
-											"value": "@split(item(), '.')[0]",
-											"type": "Expression"
+								"expression": {
+									"value": "@empty(activity('IF TABLE EXISTS').output)",
+									"type": "Expression"
+								},
+								"ifTrueActivities": [
+									{
+										"name": "DROP TABLE",
+										"description": "Borra los datos para evitar duplicidades",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
 										},
-										"type": "String"
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[BorrarTabla]",
+											"storedProcedureParameters": {
+												"NombreTabla": {
+													"value": {
+														"value": "@split(item(), '.')[0]",
+														"type": "Expression"
+													},
+													"type": "String"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "AzureSqlDatabase1",
+											"type": "LinkedServiceReference"
+										}
 									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "AzureSqlDatabase1",
-								"type": "LinkedServiceReference"
+								]
 							}
 						}
 					]
