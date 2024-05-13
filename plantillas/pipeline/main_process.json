@@ -420,7 +420,7 @@
 								{
 									"activity": "databricks-process",
 									"dependencyConditions": [
-										"Completed"
+										"Succeeded"
 									]
 								}
 							],
@@ -503,6 +503,35 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "mailSender",
+				"description": "Envio de email en caso de error",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Procesamiento de datos",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-76.eastus.logic.azure.com:443/workflows/7e5550437b0a4ea0abd18b0fd490ff65/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=jo43f4nx-ZsY4fxZGaVJ7ffcTlKrD-b34zQ-A8-8qNA",
+					"body": {
+						"value": "{\n    \"message\": \"Ha ocurrido un error en la pipeline: \n        @{pipeline().Pipeline}. Value-ID: @{pipeline().RunId}.\n        Error value @{activity('databricks-process').output}. \n        Error completo: @{activity('databricks-process').output.pipelineReturnValue}\",\n    \"dataFactoryName\": \"Factoria: @{pipeline().DataFactory}\",\n    \"activityName\": \"Factoria: @{pipeline().DataFactory}\",\n    \"receiver\": \"Factoria: @{pipeline().parameters.email}\"\n\n    }",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -526,6 +555,15 @@
 			},
 			"save_route_databricks": {
 				"type": "string"
+			},
+			"email": {
+				"type": "string",
+				"defaultValue": "dmitry.poldenev@viewnext.com"
+			}
+		},
+		"variables": {
+			"asda": {
+				"type": "Integer"
 			}
 		},
 		"annotations": []
