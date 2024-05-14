@@ -26,8 +26,8 @@
 								}
 							],
 							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 2,
+								"timeout": "0.00:10:00",
+								"retry": 0,
 								"retryIntervalInSeconds": 60,
 								"secureOutput": false,
 								"secureInput": false
@@ -503,9 +503,15 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "databricks-process",
+									"activity": "URL_error",
 									"dependencyConditions": [
-										"Failed"
+										"Completed"
+									]
+								},
+								{
+									"activity": "value_error",
+									"dependencyConditions": [
+										"Completed"
 									]
 								}
 							],
@@ -521,7 +527,57 @@
 								"method": "POST",
 								"url": "https://prod-76.eastus.logic.azure.com:443/workflows/7e5550437b0a4ea0abd18b0fd490ff65/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=jo43f4nx-ZsY4fxZGaVJ7ffcTlKrD-b34zQ-A8-8qNA",
 								"body": {
-									"value": "{\"message\": 'Ha ocurrido un error en @{pipeline().Pipeline}.El archivo @{item()} ha fallado en procesarse demasiadas veces.Error Message: @{activity('databricks-process').output}',\"activityName\": \"Factoria: @{pipeline().DataFactory}\",\"receiver\": \"@{pipeline().parameters.email}\"}",
+									"value": "{\"message\": \"Ha ocurrido un error en @{pipeline().Pipeline}. El archivo @{item()} a fallado en procesarse demasiadas veces.<br><br><strong>Mas información:</strong>@{variables('ErrorHandling')}<br><br><strong>Fallo: </strong> @{variables('errorSender')}\",\"activityName\": \"@{pipeline().DataFactory}\",\"receiver\": \"@{pipeline().parameters.email}\"}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "URL_error",
+							"description": "Guarda la dirección de URL del error",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "databricks-process",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "ErrorHandling",
+								"value": {
+									"value": "@activity('databricks-process').Error.message",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "value_error",
+							"description": "Guarda el error producido",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "databricks-process",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "errorSender",
+								"value": {
+									"value": "@replace(replace(replace(replace(activity('databricks-process').output.runError, '\"', ''),'\\n', ''), '/', ''), '\\', '')",
 									"type": "Expression"
 								}
 							}
@@ -555,17 +611,11 @@
 			}
 		},
 		"variables": {
-			"asda": {
-				"type": "Integer"
+			"ErrorHandling": {
+				"type": "String"
 			},
-			"dfsasfs": {
-				"type": "Integer"
-			},
-			"nombresEmpresas": {
-				"type": "Array"
-			},
-			"test": {
-				"type": "Integer"
+			"errorSender": {
+				"type": "String"
 			}
 		},
 		"annotations": []
