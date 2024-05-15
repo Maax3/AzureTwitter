@@ -26,8 +26,8 @@
 								}
 							],
 							"policy": {
-								"timeout": "0.00:10:00",
-								"retry": 0,
+								"timeout": "0.01:10:00",
+								"retry": 2,
 								"retryIntervalInSeconds": 60,
 								"secureOutput": false,
 								"secureInput": false
@@ -503,15 +503,15 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "URL_error",
+									"activity": "value_error",
 									"dependencyConditions": [
-										"Completed"
+										"Succeeded"
 									]
 								},
 								{
-									"activity": "value_error",
+									"activity": "URL_error",
 									"dependencyConditions": [
-										"Completed"
+										"Succeeded"
 									]
 								}
 							],
