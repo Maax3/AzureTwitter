@@ -498,7 +498,7 @@
 							}
 						},
 						{
-							"name": "mailSender",
+							"name": "error_mailSender",
 							"description": "Envio de email en caso de error",
 							"type": "WebActivity",
 							"dependsOn": [
