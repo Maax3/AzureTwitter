@@ -503,15 +503,15 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "value_error",
+									"activity": "URL_error",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								},
 								{
-									"activity": "URL_error",
+									"activity": "value_error",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],
