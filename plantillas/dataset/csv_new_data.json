@@ -1,5 +1,5 @@
 {
-	"name": "csv_data",
+	"name": "csv_new_data",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
@@ -32,43 +32,7 @@
 		},
 		"schema": [
 			{
-				"name": "user_id",
-				"type": "String"
-			},
-			{
-				"name": "username",
-				"type": "String"
-			},
-			{
 				"name": "id",
-				"type": "String"
-			},
-			{
-				"name": "created_at_datetime",
-				"type": "String"
-			},
-			{
-				"name": "text",
-				"type": "String"
-			},
-			{
-				"name": "lang",
-				"type": "String"
-			},
-			{
-				"name": "reply_count",
-				"type": "String"
-			},
-			{
-				"name": "retweet_count",
-				"type": "String"
-			},
-			{
-				"name": "favorite_count",
-				"type": "String"
-			},
-			{
-				"name": "view_count",
 				"type": "String"
 			},
 			{
@@ -76,23 +40,15 @@
 				"type": "String"
 			},
 			{
-				"name": "hashtags",
+				"name": "latitud",
 				"type": "String"
 			},
 			{
-				"name": "in_reply_to",
+				"name": "longitud",
 				"type": "String"
 			},
 			{
-				"name": "quote",
-				"type": "String"
-			},
-			{
-				"name": "quote_count",
-				"type": "String"
-			},
-			{
-				"name": "possibly_sensitive",
+				"name": "temas",
 				"type": "String"
 			}
 		]
