@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"file_name_themes": {
+			"file_name_origin": {
 				"type": "string"
 			}
 		},
@@ -18,10 +18,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().file_name_themes",
-					"type": "Expression"
-				},
 				"folderPath": "raw_csv",
 				"fileSystem": "rawdata"
 			},

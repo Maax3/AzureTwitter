@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_original_data",
+						"referenceName": "test_1",
 						"type": "DatasetReference"
 					},
 					"name": "origindata"
@@ -25,7 +25,7 @@
 						"referenceName": "ds_final_data",
 						"type": "DatasetReference"
 					},
-					"name": "guardado"
+					"name": "Guardado"
 				}
 			],
 			"transformations": [
@@ -117,7 +117,7 @@
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> guardado"
+				"     partitionBy('hash', 1)) ~> Guardado"
 			]
 		}
 	}
