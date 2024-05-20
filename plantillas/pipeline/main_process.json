@@ -15,11 +15,11 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "databricks_process",
+							"name": "databricks-process",
 							"type": "DatabricksNotebook",
 							"dependsOn": [
 								{
-									"activity": "dataflow_process",
+									"activity": "dataflow-process",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -370,7 +370,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "databricks_process",
+									"activity": "databricks-process",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -494,7 +494,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "databricks_process",
+									"activity": "databricks-process",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -519,7 +519,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "databricks_process",
+									"activity": "databricks-process",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -539,7 +539,7 @@
 							}
 						},
 						{
-							"name": "dataflow_process",
+							"name": "dataflow-process",
 							"type": "ExecuteDataFlow",
 							"dependsOn": [],
 							"policy": {
