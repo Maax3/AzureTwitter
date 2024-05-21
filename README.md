@@ -5,7 +5,7 @@
 Este proyecto se ha realizado con el fin de poner en práctica los diferentes servicios que ofrece Azure. Como lenguaje de programación se ha elegido Python y también se han utilizado otras tecnologías/aplicaciones como:
  - Databricks para la selección, transformación y guardado de los datos. 
  - Grafana para la visualización de datos.
- - Azure Data Studio para el manejo de las tablas SQL y creación de procedimientos para ejecutarlos dentro de Data Factory.
+ - Azure Data Studio (gestor de BDD) para el manejo de las tablas SQL y creación de procedimientos para ejecutarlos dentro de Data Factory.
 
  # Esquema general del proyecto
 
@@ -54,7 +54,7 @@ Es la primera actividad que va ejecutar el ForEach. Su función es procesar los 
 
 ![](imgs/dataflow1.png)
 
-### Configuración de parámetros del DataFlow
+#### Configuración de parámetros del DataFlow
 
 
 ![](imgs/dataflow_params1.png)
@@ -66,6 +66,13 @@ Es la primera actividad que va ejecutar el ForEach. Su función es procesar los 
 El resultado se carga en los datasets y se unen mediante las actividades internas del dataflow (join, union etc...) en un único archivo que se guarda en un contenedor del Data Lake.
 
 ## Databricks
+
+#### ¿Qué es Databricks?
+
+Es una plataforma analítica basada en Apache Spark que ofrece una solución ETL completa y permite tratar los datos en forma de batch (por lotes), streaming o via machine learning. 
+
+En este caso, se ha utilizado un notebook de Databricks para realizar el **análisis de sentimientos** de cada tweet a través de un modelo LLM.
+
 
 ## Creación de la BDD de forma automática
 
@@ -134,9 +141,33 @@ Podemos definir alertas para que una vez superado un cierto umbral se nos avise 
 
 ### Azure Log Analytics
 
-Este servicio nos permite unificar todas las métricas/logs de nuestros servicios y se usa para editar y ejecutar consultas de registro.
+Este servicio nos permite unificar todas las métricas/logs de nuestros servicios y se usa para editar y ejecutar consultas de registro. Además, lo interesante de este sistema centralizado es que puedes hacer “notebooks” aka Libros de cualquier consulta y se pueden guardar. 
+
+De forma que, una vez hecha una consulta no hay necesidad de volverla a escribir. Esto permite crear filtros de logs, alertas, métricas totalmente a tu gusto y mantener todas las consultas documentadas en un solo lugar.
 
 #### Alertas personalizadas con KQL
+
+1. Creamos el servicio de Log Analytics.
+2. Activamos el volcado de datos en el servicio de Data Factory y
+seleccionamos los datos que queramos obtener.
+
+![](imgs/diag1.png)
+
+**Log Analytics** creará diferentes tablas con la información seleccionada con las
+cuales podemos interactuar tal como si de SQL se tratase:
+
+![](imgs/consulta0.png)
+
+3. Realizamos consultas personalizadas en KQL para integrarlas posteriormente con las Alertas
+
+![](imgs/libro1.png)
+
+![](imgs/libro2.png)
+
+4. Finalmente, configuramos la alerta para que nos envie un mail en caso de cumplir las condiciones establecidas
+
+![](imgs/libro3.png)
+
 
 ### Logic Apps orientadas a notificaciones
 
@@ -184,4 +215,8 @@ pre-configurada. El esquema JSON es totalmente personalizable
 ![](imgs/logs8.png)
 
 # Visualización - Grafana
+
+#### ¿Qué es Grafana?
+
+Grafana es una plataforma interactiva y dinámica de código abierto. Basada en la licencia Apache 2.0 y propiedad de Grafana Labs, permite almacenar, visualizar, analizar y comprender métricas de rendimiento de una forma clara y sencilla. 
 
