@@ -220,3 +220,4 @@ pre-configurada. El esquema JSON es totalmente personalizable
 
 Grafana es una plataforma interactiva y dinámica de código abierto. Basada en la licencia Apache 2.0 y propiedad de Grafana Labs, permite almacenar, visualizar, analizar y comprender métricas de rendimiento de una forma clara y sencilla. 
 
+# Almacenmaniento
