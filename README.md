@@ -1,9 +1,42 @@
 # Índice
 
+1. [Introducción](#introducción)
+2. [Esquema general del proyecto](#esquema-general-del-proyecto)
+3. [Grupo de recursos](#grupo-de-recursos)
+4. [Almacenamiento](#almacenamiento)
+5. [Azure Data Factory](#azure-data-factory)
+    * [Esquema](#esquema-de-data-factory)
+    * [Estructura](#estructura-del-data-factory)
+6. [Azure Data Flow](#azure-dataflow)
+7. [Databricks](#databricks)
+    * [Estructura](#estructura-1)
+    * [Script](#script)
+8. [Creacion de la BDD de forma automática](#creación-de-la-bdd-de-forma-automática)
+    * [Esquema](#esquema-general-del-proceso)
+    * [Esquema del Data Flow](#esquema-del-dataflow)
+    * [Procedimientos](#resultado-y-código-de-los-procedimientos)
+9. [Gestión de errores, alertas y métricas](#gestión-de-errores-alertas-y-métricas)
+    * [Alerta de presupuesto](#alerta-de-presupuesto)
+    * [Azure Log Analytics](#azure-log-analytics)
+    * [Logic APP orientana a notificaciones](#logic-apps-orientadas-a-notificaciones)
+        * [Métricas de hardware](#métricas-del-hardware)
+        * [Métricas de Spark](#métricas-de-spark)
+10. [Visualización - Grafana](#visualización---grafana)
+    * [Visualizaciones totales y temas más populares](#visualizaciones-totales-y-temas-más-populares)
+    * [Distribución de sentimientos negativos](#distribución-de-sentimientos-negativos)
+    * [Distribución por geolocalización entre Minsait y Viewnext](#distribución-por-geolocalización-entre-minsait-y-viewnext)
+    * [Interacciones totales de Viewnext en el último año](#interacciones-totales-likes-retweets-y-visualizaciones-de-viewnext-en-el-último-año)
+    * [Horas de actividad de NTTDATA](#horas-de-actividad-donde-más-aparece-nttdata)
+    * [Visualización de sentimientos de Minsait por año](#visualización-de-sentimientos-de-minsait-por-año)
+    * [Frecuencia de tweets por mes de Hiberus](#frecuencia-de-tweets-por-mes-de-hiberus)
+    * [Actividad de TOP 5 usuarios de Hiberus](#actividad-de-top-5-usuarios-de-hiberus)
+
 
 # Introducción
 
-Este proyecto se ha realizado con el fin de poner en práctica los diferentes servicios que ofrece Azure. Como lenguaje de programación se ha elegido Python y también se han utilizado otras tecnologías/aplicaciones como:
+Este proyecto se ha realizado con el fin de poner en práctica los diferentes servicios que ofrece Azure. Consiste en un análisis de tweets de 4 tecnológicas españolas (Viewnext, Hiberus, Minsait y NTTDATA).
+
+Como lenguaje de programación se ha elegido Python y también se han utilizado otras tecnologías/aplicaciones como:
  - Databricks para la selección, transformación y guardado de los datos. 
  - Grafana para la visualización de datos.
  - Azure Data Studio (gestor de BDD) para el manejo de las tablas SQL y creación de procedimientos para ejecutarlos dentro de Data Factory.
@@ -22,7 +55,7 @@ Este proyecto se ha realizado con el fin de poner en práctica los diferentes se
 | Data Factory   | Plataforma de orquestación de servicios y ETL  |
 | SQL | Base de datos para mantener la información en formato SQL |
 | Logic App | Aplicación para gestión y monitorización de errores en Data Factory |
-| Log Analytics | Servicio que guarda la información sobre errores, métricas y logs en Data Factory |
+| Log Analytics | Servicio que guarda la información de errores, métricas y logs sobre Data Factory |
 | Notebooks o Libros de Azure | Guardan las consultas de KQL que obtienen información de Log Analytics
 | Alertas personalizadas | Alertas sobre métricas, control de presupuesto y errores en Data Factory |
 
@@ -43,16 +76,16 @@ El proyecto contiene 2 contenedores y dentro sus respectivos directorios para al
 
 # Azure Data Factory
 
-Data Factory es la raíz de infraestructura. Se compone de una única ```pipeline``` parametrizada que realiza todo el proceso. También integra una gestión de errores y alertas dedicadas.
+#### ¿Qué es Data Factory?
 
-## Esquema de Data Factory
+Azure Data Factory permite conectar los diferentes servicios de Azure entre sí para realizar la extracción, transformación y carga (ETL).
+
+En este caso, Data Factory actúa como la raíz de infraestructura. Se compone de una única ```pipeline``` parametrizada que realiza todo el proceso. También integra una gestión de errores y alertas dedicadas.
+
+#### Esquema de Data Factory
 
 ![](imgs/pipeline2.png)
 ![](imgs/pipeline1.png)
-
-#### ¿Qué es Data Factory?
-
- Azure Data Factory permite conectar los diferentes servicios de Azure entre sí para realizar la extracción, transformación y carga (ETL).
 
 #### Estructura del Data Factory
 
@@ -87,11 +120,14 @@ Es la primera actividad que va a ejecutar el ForEach. Su función es procesar lo
 
 ![](imgs/dataflow_params1.png)
 
-**El Dataset origindata** carga el archivo.csv del DataFlow que es el elemento en curso del forEach como: "Hiberus.csv".
+![](imgs/datasets.png)
 
-**El dataset de newdata**, concatena "tema" al nombre del fichero para identificar correctamente el archivo adicional. Esta aproximación también permite evitar crear más parámetros a nivel de pipeline con nombres csv explícitos.
+**El parámetro que envía la información al Dataset origindata/csv_data** carga el archivo.csv del DataFlow que es el elemento en curso del forEach como: "Hiberus.csv".
+
+**El parámetro que envía la información al dataset de newdata**, concatena "tema" al nombre del fichero para identificar correctamente el archivo adicional. Esta aproximación también permite evitar crear más parámetros a nivel de pipeline con nombres csv explícitos.
 
 El resultado se carga en los datasets y se unen mediante las actividades internas del dataflow (join, union etc...) en un único archivo que se guarda en un contenedor del Data Lake.
+
 
 ## Databricks
 
@@ -139,7 +175,7 @@ Para ello, necesitas configurar el flujo de Data Factory, en mi caso he incluido
 - Una actividad de ``PROCEDIMIENTO`` para modificar la tabla y definir una ``PRIMARY KEY``.
 - Parametrizar las actividades para que por cada elemento del for se cree una nueva tabla con el nombre correspondiente.
 
-#### Explicación del DataFlow
+#### Esquema del DataFlow
 
 ![](imgs/sql1.png)
 
@@ -149,7 +185,7 @@ Después enlazamos el flujo con la actividad de ``COPY DATA`` para generar la ta
 
 ![](imgs/sql2.png)
 
-#### Resultado
+#### Resultado y código de los Procedimientos
 
 
 ![](imgs/sql3.png)
@@ -168,7 +204,7 @@ El ``'U'`` en la función ``OBJECT_ID`` es un parámetro que especifica el tipo 
 - ``'FN':`` Se refiere a una función definida por el usuario (escalar).
 - ``'IF':`` Se refiere a una función definida por el usuario (tabla en línea).
 
-Si se encuentra una tabla con ese nombre, la función devuelve su identificador único de objeto (object_id); de lo contrario, devuelve ``NULL``.
+**Si se encuentra una tabla con ese nombre, la función devuelve su identificador único de objeto (object_id); de lo contrario, devuelve ``NULL``.**
 
 ## Gestión de errores, alertas y métricas
 
@@ -190,7 +226,7 @@ Podemos definir alertas para que una vez superado un cierto umbral se nos avise 
 
 ### Azure Log Analytics
 
-Este servicio nos permite unificar todas las métricas/logs de nuestros servicios y se usa para editar y ejecutar consultas de registro. Además, lo interesante de este sistema centralizado es que puedes hacer “notebooks” aka Libros de cualquier consulta y se pueden guardar. 
+Este servicio nos permite unificar todas las métricas/logs de nuestros servicios y se usa para editar y ejecutar consultas de registro. Además, lo interesante de este sistema centralizado es que puedes hacer “notebooks” aka Libros de cualquier consulta y se pueden guardar para su posterior reutilización. 
 
 De forma que, una vez hecha una consulta no hay necesidad de volverla a escribir. Esto permite crear filtros de logs, alertas, métricas totalmente a tu gusto y mantener todas las consultas documentadas en un solo lugar.
 
@@ -282,6 +318,8 @@ Grafana es una plataforma interactiva y dinámica de código abierto. Permite al
 #### Distribución por geolocalización entre Minsait y Viewnext
 
 ![](imgs/g4.png)
+
+*El ``GEOMAP`` indica desde dónde se han enviado los tweets en España.*
 
 #### Interacciones totales (likes, retweets y visualizaciones) de Viewnext en el último año 
 
