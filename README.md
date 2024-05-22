@@ -1,4 +1,5 @@
-# Indice
+# Índice
+
 
 # Introducción
 
@@ -11,20 +12,47 @@ Este proyecto se ha realizado con el fin de poner en práctica los diferentes se
 
 ![](imgs/esquema1)
 
+
+# Grupo de recursos
+
+| Servicio | Descripción |
+|----------|----------|
+| Cuenta de Almacenamiento Data Lake v2    | Almacena la información en Azure   | 
+| Databricks    | Cluster de databricks para realizar ETL   | 
+| Data Factory   | Plataforma de orquestación de servicios y ETL  |
+| SQL | Base de datos para mantener la información en formato SQL |
+| Logic App | Aplicación para gestión y monitorización de errores en Data Factory |
+| Log Analytics | Servicio que guarda la información sobre errores, métricas y logs en Data Factory |
+| Notebooks o Libros de Azure | Guardan las consultas de KQL que obtienen información de Log Analytics
+| Alertas personalizadas | Alertas sobre métricas, control de presupuesto y errores en Data Factory |
+
+
+# Almacenamiento
+
+#### ¿Qué es Data Lake Gen2?
+
+Se trata de un servicio de almacenamiento optimizado donde se pueden cargar grandes volúmenes de datos para el análisis a gran escala. 
+
+Se caracteriza por no depender de un esquema de datos, por lo que da mucha flexibilidad para migrar cualquier tipo servicio/aplicación, y permite gestionar la información en contenedores blob (objeto binario grande), tablas y colas.
+
+#### Estructura
+
+El proyecto contiene 2 contenedores y dentro sus respectivos directorios para almacenar y tener ordenada la información.
+
+![](imgs/alm1.png)
+
 # Azure Data Factory
 
 Data Factory es la raíz de infraestructura. Se compone de una única ```pipeline``` parametrizada que realiza todo el proceso. También integra una gestión de errores y alertas dedicadas.
 
-## Esquema de DataFactory
+## Esquema de Data Factory
 
 ![](imgs/pipeline2.png)
 ![](imgs/pipeline1.png)
 
-## DataFactory
-
 #### ¿Qué es Data Factory?
 
- Azure Data Factory permite conectar los diferentes servicios de Azure entre si para realizar la extracción, transformación y carga (ETL).
+ Azure Data Factory permite conectar los diferentes servicios de Azure entre sí para realizar la extracción, transformación y carga (ETL).
 
 #### Estructura del Data Factory
 
@@ -50,7 +78,7 @@ En este caso, existe un único parámetro con los nombres del archivo.csv que se
 
 ## Azure DataFlow
 
-Es la primera actividad que va ejecutar el ForEach. Su función es procesar los diferentes archivos.csv y unirlos en un único resultado. Además, se agrega una columna adicional que se usará como Primary Key en cada tabla de la BDD.
+Es la primera actividad que va a ejecutar el ForEach. Su función es procesar los diferentes archivos.csv y unirlos en un único resultado. Además, se agrega una columna adicional que se usará como Primary Key en cada tabla de la BDD.
 
 ![](imgs/dataflow1.png)
 
@@ -73,6 +101,27 @@ Es una plataforma analítica basada en Apache Spark que ofrece una solución ETL
 
 En este caso, se ha utilizado un notebook de Databricks para realizar el **análisis de sentimientos** de cada tweet a través de un modelo LLM.
 
+#### Estructura
+
+Se utilizó un ``Token SAS`` para conectarse al servicio de Azure Databricks. Después, dentro de la pipeline Databricks procesa los archivos resultantes del Data Flow.
+
+![](imgs/dataflow2.png)
+
+El nombre de cada archivo se obtiene de forma dinámica, mediante parámetros que se indican tanto en Azure como en el Notebook.
+
+Después se realiza un Script en Python para:
+- Realizar un análisis de los tweets con un modelo LLM de HuggingFace.
+- Seleccionar, tratar y organizar la información.
+- Guardar la información en un directorio temporal para renombrarla y moverla al contenedor de Azure correspondiente.
+
+#### Script
+
+![](imgs/script1.png)
+
+![](imgs/script2.png)
+
+![](imgs/script3.png)
+
 
 ## Creación de la BDD de forma automática
 
@@ -84,7 +133,7 @@ Azure Data Factory permite copiar datos con la actividad de ```COPY DATA```. En 
 
 Asimismo, esta actividad es capaz de generar una, o múltiples tablas de forma automática con una estructura personalizada. Es decir, mediante ``COPY DATA`` puedes automatizar todo el proceso de creación del esquema e inserción de datos en la BDD.
 
-Para ello, necesitas configurar el flujo de Data Factory, en mi caso he incluído:
+Para ello, necesitas configurar el flujo de Data Factory, en mi caso he incluido:
 - Una actividad de ``COPY DATA`` para que haga la tabla con sus tipos de datos.
 - Una actividad de ``PROCEDIMIENTO`` para borrar los datos en caso de existir.
 - Una actividad de ``PROCEDIMIENTO`` para modificar la tabla y definir una ``PRIMARY KEY``.
@@ -94,9 +143,9 @@ Para ello, necesitas configurar el flujo de Data Factory, en mi caso he incluíd
 
 ![](imgs/sql1.png)
 
-Podemos ligar la actividad de ``BUSQUEDA`` con la BDD para realizar una consulta automática. Si esta consulta nos devuelve un resultado, significa que existen datos en la tabla y se procederá a ejecutar el ``PROCEDIMIENTO DE DROP TABLE``. 
+Podemos ligar la actividad de ``BÚSQUEDA`` con la BDD para realizar una consulta automática. Si esta consulta nos devuelve un resultado, significa que existen datos en la tabla y se procederá a ejecutar el ``PROCEDIMIENTO DE DROP TABLE``. 
 
-Después enlazamos el flujo con la actividad de ``COPY DATA`` para generar la tabla con el nombre de la empresa en curso y sus respectivos datos. Por último, desancadenamos los ``PROCEDIMIENTOS`` creados en la BDD para personalizar la tabla resultante.
+Después enlazamos el flujo con la actividad de ``COPY DATA`` para generar la tabla con el nombre de la empresa en curso y sus respectivos datos. Por último, desencadenamos los ``PROCEDIMIENTOS`` creados en la BDD para personalizar la tabla resultante.
 
 ![](imgs/sql2.png)
 
@@ -132,7 +181,7 @@ Para este proyecto **se ha configurado Data Factory** para volcar todas las mét
 Podemos definir alertas para que una vez superado un cierto umbral se nos avise via mail o SMS.
 
 1. Creamos un presupuesto en el apartado de Cost Management / presupuesto.
-2. Configuramos la alerta en la misma interfaz en base al presupuesto especificado.
+2. Configuramos la alerta en la misma interfaz basándonos en el presupuesto especificado.
 
 ![](imgs/presupuesto1.png)
 
@@ -148,12 +197,11 @@ De forma que, una vez hecha una consulta no hay necesidad de volverla a escribir
 #### Alertas personalizadas con KQL
 
 1. Creamos el servicio de Log Analytics.
-2. Activamos el volcado de datos en el servicio de Data Factory y
-seleccionamos los datos que queramos obtener.
+2. Activamos el volcado de datos en el servicio de Data Factory y seleccionamos los datos que queramos obtener.
 
 ![](imgs/diag1.png)
 
-**Log Analytics** creará diferentes tablas con la información seleccionada con las
+**Log Analytics** generará diferentes tablas con la información seleccionada con las
 cuales podemos interactuar tal como si de SQL se tratase:
 
 ![](imgs/consulta0.png)
@@ -164,7 +212,7 @@ cuales podemos interactuar tal como si de SQL se tratase:
 
 ![](imgs/libro2.png)
 
-4. Finalmente, configuramos la alerta para que nos envie un mail en caso de cumplir las condiciones establecidas
+4. Finalmente, configuramos la alerta para que nos envíe un mail en caso de cumplir las condiciones establecidas
 
 ![](imgs/libro3.png)
 
@@ -173,14 +221,13 @@ cuales podemos interactuar tal como si de SQL se tratase:
 
 Es posible configurar y crear pequeñas aplicaciones que notifiquen al destinatario y personalizar esta información para tus necesidades y caso particular.
 
-Por ejemplo, si se tiene constancia de que un servicio es propenso al fallo podríamos configurar una alerta al correo electrónico para que nos muestre que ha sucedido.
+Por ejemplo, si se tiene constancia de que un servicio es propenso al fallo, podríamos configurar una alerta al correo electrónico para que nos muestre que ha sucedido.
 
 #### Alerta de error personalizada con Logic APP
 
 A continuación, se muestra un ejemplo para el servicio de Databricks en un DataFactory.
 
-1. Configuramos el pipeline para que, en caso de error se pueda aislar, parsear
-y transmitir por HTTP a la logic app.
+1. Configuramos el pipeline para que, en caso de error se pueda aislar, parsear y transmitir por HTTP a la logic app.
 
 ![](imgs/logs1.png)
 
@@ -216,8 +263,48 @@ pre-configurada. El esquema JSON es totalmente personalizable
 
 # Visualización - Grafana
 
+*En la carpeta ``PDF`` es posible ver todos los gráficos.*
+
 #### ¿Qué es Grafana?
 
-Grafana es una plataforma interactiva y dinámica de código abierto. Basada en la licencia Apache 2.0 y propiedad de Grafana Labs, permite almacenar, visualizar, analizar y comprender métricas de rendimiento de una forma clara y sencilla. 
+Grafana es una plataforma interactiva y dinámica de código abierto. Permite almacenar, visualizar, analizar y comprender métricas de rendimiento/datos de una forma clara y sencilla. 
 
-# Almacenmaniento
+#### Visualizaciones totales y temas más populares
+
+![](imgs/g1.png)
+
+![](imgs/g2.png)
+
+#### Distribución de sentimientos negativos
+
+![](imgs/g3.png)
+
+#### Distribución por geolocalización entre Minsait y Viewnext
+
+![](imgs/g4.png)
+
+#### Interacciones totales (likes, retweets y visualizaciones) de Viewnext en el último año 
+
+![](imgs/g5.png)
+
+#### Horas de actividad donde más aparece NTTDATA
+
+![](imgs/g6.png)
+
+En este mapa de calor, entre las 13:00 y las 15:00 horas sería el rango donde han twiteado sobre la empresa.
+
+#### Visualización de sentimientos de Minsait por año
+
+![](imgs/g7.png)
+
+* Color verde: Tweets con tendencia positiva.
+* Color gris: Tweets neutrales (informativos).
+* Color rojo: Tweets con tono negativo.
+
+#### Frecuencia de Tweets por mes de Hiberus
+
+![](imgs/g8.png)
+
+#### Actividad de TOP 5 usuarios de Hiberus
+
+![](imgs/g9.png)
