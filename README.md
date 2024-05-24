@@ -329,7 +329,7 @@ Grafana es una plataforma interactiva y dinámica de código abierto. Permite al
 
 ![](imgs/g6.png)
 
-En este mapa de calor, entre las 13:00 y las 15:00 horas sería el rango donde han twiteado sobre la empresa.
+En este mapa de calor, entre las 13:00 y las 15:00 horas sería el rango donde **más** han twiteado sobre la empresa.
 
 #### Visualización de sentimientos de Minsait por año
 
