@@ -31,7 +31,6 @@
     * [Frecuencia de tweets por mes de Hiberus](#frecuencia-de-tweets-por-mes-de-hiberus)
     * [Actividad de TOP 5 usuarios de Hiberus](#actividad-de-top-5-usuarios-de-hiberus)
 
-
 # Introducción
 
 Este proyecto se ha realizado con el fin de poner en práctica los diferentes servicios que ofrece Azure. Consiste en un análisis de tweets de 4 tecnológicas españolas (Viewnext, Hiberus, Minsait y NTTDATA).
@@ -346,3 +345,6 @@ En este mapa de calor, entre las 13:00 y las 15:00 horas sería el rango donde *
 #### Actividad de TOP 5 usuarios de Hiberus
 
 ![](imgs/g9.png)
+
+ *Créditos por el scrapping de python*
+- https://github.com/jz1k
