@@ -345,6 +345,3 @@ En este mapa de calor, entre las 13:00 y las 15:00 horas sería el rango donde *
 #### Actividad de TOP 5 usuarios de Hiberus
 
 ![](imgs/g9.png)
-
- *Créditos por el scrapping de python*
-- https://github.com/jz1k
